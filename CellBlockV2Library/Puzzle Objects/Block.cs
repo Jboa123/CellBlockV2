@@ -17,19 +17,31 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// <param name="area"></param>
         /// <param name="definedCell"></param>
         /// <param name="grid"></param>
-        public Block(int index, int area, ICell definedCell, IGrid grid)
+        public Block(int index, int capacity, ICell definedCell, IGrid grid)
         {
-            Index = index;
-            Area = area;
-            DefinedCell = definedCell;
-            Grid = grid;
+            this.Index = index;
+            this.Capacity = capacity;
+            this.DefinedCell = definedCell;
+            this.Grid = grid;
         }
-        private IGrid Grid;
-        public int Index { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Area { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public ICell DefinedCell { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public ICollection<ICell> Cells { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public ICell TopLeftCell { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<int> Dimensions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        protected IGrid Grid;
+        public int Index { get; set; }
+        public int Capacity { get; set; }
+        public ICell DefinedCell { get; set; }
+        /// <summary>
+        /// The Collection of Cells that make up the block.
+        /// Not initially known for MainBlocks. Always known for Possible Block.
+        /// </summary>
+        public ICollection<ICell> Cells { get; set; }
+        /// <summary>
+        ///  Not initially known for MainBlocks. Always known for Possible Block.
+        ///  The coordinates of the Cell of MainBlocks are used when saving the solution to a data base.
+        /// </summary>
+        public ICell TopLeftCell { get; set; }
+        /// <summary>
+        /// Not initially known for MainBlocks. Always known for Possible Block.
+        ///  The coordinates of the Cell of MainBlocks are used when saving the solution to a data base.
+        /// </summary>
+        public List<int> Dimensions { get; set; }
     }
 }

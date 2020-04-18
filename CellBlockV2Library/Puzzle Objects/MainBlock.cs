@@ -7,7 +7,7 @@ namespace CellBlockV2Library.Puzzle_Objects
     public class MainBlock : Block, IMainBlock
     {
         public MainBlock() : base() { }
-        public MainBlock(int index, int area, ICell definedCell, IGrid grid) : base(index, area, definedCell, grid) { }
-        public ICollection<IPossibleBlock> PossibleBlocks{ get; set; }
+        public MainBlock(int index, int capacity, ICell definedCell, IGrid grid) : base(index, capacity, definedCell, grid) { }
+        public List<IPossibleBlock> PossibleBlocks{ get; set; }
     }
 }

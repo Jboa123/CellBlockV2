@@ -7,7 +7,7 @@ namespace CellBlockV2Library.Puzzle_Objects
     public interface IGrid
     {
         ICollection<ICell> Cells { get; set; }
-        ICollection<IMainBlock> MainBlocks { get; set; }
+        List<IMainBlock> MainBlocks { get; set; }
         int SolvedCellCount { get; set; }
         bool HasSolution { get; set; }
 }

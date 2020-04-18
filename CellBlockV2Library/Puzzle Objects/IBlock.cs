@@ -8,7 +8,7 @@ namespace CellBlockV2Library.Puzzle_Objects
     {
         int Index { get; set; }
 
-        int Area { get; set; }
+        int Capacity { get; set; }
 
         ICell DefinedCell { get; set; }
 
