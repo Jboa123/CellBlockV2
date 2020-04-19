@@ -8,6 +8,6 @@ namespace CellBlockV2Library.Puzzle_Objects
     {
         public MainBlock() : base() { }
         public MainBlock(int index, int capacity, ICell definedCell, IGrid grid) : base(index, capacity, definedCell, grid) { }
-        public List<IPossibleBlock> PossibleBlocks{ get; set; }
+        public HashSet<IPossibleBlock> PossibleBlocks{ get; set; }
     }
 }

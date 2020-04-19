@@ -6,11 +6,10 @@ namespace CellBlockV2Library.Puzzle_Objects
 {
     public class PossibleBlock : Block, IPossibleBlock
     {
-        
         public PossibleBlock() : base() { }
         public PossibleBlock(int index, int capacity, ICell definedCell, IGrid grid) : base(index, capacity, definedCell, grid) { }
         /// <summary>
-        /// Sets the relevant properties of the appropriate MainBlock (equal index) to those of this PossibleBlock.
+        /// Sets the relevant properties of the appropriate MainBlock to those of this PossibleBlock.
         /// </summary>
         public void SetAsMainBlock()
         {
@@ -22,7 +21,7 @@ namespace CellBlockV2Library.Puzzle_Objects
             mainBlock.PossibleBlocks.Add(this);
             foreach (ICell cell in this.Cells)
             {
-                if (cell.OwnedBy == -1)
+                if (cell.OwnedBy == null)
                 {
                     cell.SetOwnership(mainBlock);
                 }

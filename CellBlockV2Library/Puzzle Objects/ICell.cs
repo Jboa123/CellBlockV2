@@ -16,9 +16,9 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// </summary>
         List<int> Coordinates { get; set; }
         /// <summary>
-        /// The index of the MainBlock that owns this cell. If the Cell is not owned the value of this property is -1.
+        /// The MainBlock that owns this cell. If the Cell is not owned the value of this property is null.
         /// </summary>
-        int OwnedBy { get; set; }
+        IMainBlock OwnedBy { get; set; }
         /// <summary>
         /// Is this Cell owned by a MainBlock other than that inputted? Returns true if so, otherwise false. 
         /// Accepts either a MainBlock or an integer representing the index of a MainBlock as a parameter.
