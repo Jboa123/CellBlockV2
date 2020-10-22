@@ -11,7 +11,7 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// <summary>
         /// Sets the relevant properties of the appropriate MainBlock to those of this PossibleBlock.
         /// </summary>
-        public void SetAsMainBlock()
+        public bool SetAsMainBlock()
         {
             IMainBlock mainBlock = this.Grid.MainBlocks[this.Index];
             mainBlock.Cells = this.Cells;
@@ -23,9 +23,13 @@ namespace CellBlockV2Library.Puzzle_Objects
             {
                 if (cell.OwnedBy == null)
                 {
-                    cell.SetOwnership(mainBlock);
+                    if(cell.SetOwnership(mainBlock))
+                    {
+                        return true;
+                    }
                 }
             }
+            return false;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// <summary>
         /// A dictionary with key as a MainBlock and the value as a list of all PossibleBlocks of equal index to the key, that contain this Cell.
         /// </summary>
-        Dictionary<IMainBlock, List<IPossibleBlock>> PossibleOwners { get; set; }
+        Dictionary<IMainBlock, Dictionary<int, IPossibleBlock>> PossibleOwners { get; set; }
      
         /// <summary>
         /// The Cartesian coordinates of the cell;
@@ -34,8 +34,8 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// This is the only method that should modify the Cell.OwnedBy, Grid.SolvedCellCount or MainBlock.Cells. 
         /// </summary>
         /// <param name="mainBlock"></param>
-        void SetOwnership(IMainBlock mainBlock);
-        void SetOwnership(int mainBlockIndex);
+        bool SetOwnership(IMainBlock mainBlock);
+        bool SetOwnership(int mainBlockIndex);
 
 
     }

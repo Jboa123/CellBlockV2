@@ -22,5 +22,11 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// If the Grid's capacity is equal to SolvedCellCount, the Grid has a solution. True is returned if the Grid has a solution, otherwise false.
         /// </summary>
         bool HasSolution { get;}
-}
+        /// <summary>
+        /// Returns the Cell that lies at the input coordinates.
+        /// </summary>
+        /// <param name="cartesianCoordinates"></param>
+        /// <returns></returns>
+        ICell GetCellFromCartesian(List<int> cartesianCoordinates);
+    }
 }

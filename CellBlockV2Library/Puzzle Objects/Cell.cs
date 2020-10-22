@@ -6,10 +6,9 @@ using System.Text;
 
 namespace CellBlockV2Library.Puzzle_Objects
 {
-    class Cell : ICell
+    class Cell : CoreProperties, ICell
     {
-        private IGrid Grid;
-        public Dictionary<IMainBlock, List<IPossibleBlock>> PossibleOwners { get; set; }
+        public Dictionary<IMainBlock, Dictionary<int,IPossibleBlock>> PossibleOwners { get; set; }
         public List<int> Coordinates { get; set ; }
         public IMainBlock OwnedBy { get; set; }
         /// <summary>
@@ -46,20 +45,21 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// Increments SolvedCellCount which is used to test if a given instance of a Grid has been solved.
         /// </summary>
         /// <param name="mainBlock"></param>
-        public void SetOwnership(IMainBlock mainBlock)
+        public bool SetOwnership(IMainBlock mainBlock)
         { 
             this.OwnedBy = mainBlock;
             mainBlock.Cells.Add(this);
             this.Grid.SolvedCellCount++;
+            return this.RemoveImpossibleBlocksGlobally();
         }
 
-        public void SetOwnership(int mainBlockIndex)
+        public bool SetOwnership(int mainBlockIndex)
         {
-            IMainBlock mainBlock = this.Grid.MainBlocks[mainBlockIndex];
-            this.OwnedBy = mainBlock;
+            IMainBlock mainBlock = Grid.MainBlocks[mainBlockIndex];
+            OwnedBy = mainBlock;
             mainBlock.Cells.Add(this);
-            this.Grid.SolvedCellCount++;
-            this.RemoveImpossibleBlocksGlobally();
+            Grid.SolvedCellCount++;
+            return RemoveImpossibleBlocksGlobally();
             /*this.PossibleOwners.Clear();
             this.PossibleOwners.Add(mainBlock, mainBlock.PossibleBlocks);*/
         }
@@ -67,7 +67,7 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// This method is designed to be called only from the SetOwnership method. Once a Cell is marked as onwed, all other PossibleBlocks of different index containing this Cell can be removed.
         /// All PossibleBlock corresponding to other MainBlocks can be removed.
         /// </summary>
-        private void RemoveImpossibleBlocksGlobally()
+        private bool RemoveImpossibleBlocksGlobally()
         {
             foreach (var KVP in this.PossibleOwners)
             {
@@ -76,14 +76,20 @@ namespace CellBlockV2Library.Puzzle_Objects
                 {
                     foreach (var possibleBlock in KVP.Value)
                     {
-
                         mainBlock.PossibleBlocks.Remove(possibleBlock);
-                        this.PossibleOwners[mainBlock].Remove(possibleBlock);
-
+                        if(mainBlock.PossibleBlocks.Count == 0)
+                        {
+                            return true;
+                        }
+                        PossibleOwners[mainBlock][possibleBlock.Index] = null;
                     }
+
                 }
             }
+            return false;
         }
+
+
 
     }
 }

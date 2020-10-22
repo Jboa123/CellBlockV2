@@ -6,6 +6,6 @@ namespace CellBlockV2Library.Puzzle_Objects
 {
     public interface IPossibleBlock:IBlock
     {
-        void SetAsMainBlock();
+        bool SetAsMainBlock();
     }
 }

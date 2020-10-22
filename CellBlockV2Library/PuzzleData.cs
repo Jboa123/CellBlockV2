@@ -8,26 +8,27 @@ namespace CellBlockV2Library
 
     public class PuzzleData : IPuzzleData
     {
-        List<int> PuzzleDimensions { get; set; }
-
-        public List<List<int>> PreDefinedCells { get; set; }
-        public int NumberOfDimensions { get; set; }
-        public int TotalCells { get; set; }
-
         public PuzzleData()
         {
-            GetTotalCells();
+            GetTotalCapacity();
         }
+
+        public List<int> PuzzleDimensions { get; set; }
+
+        public List<List<int>> PreDefinedCells { get; set; }
+        public int TotalCapacity{ get; set; }
+
+
         /// <summary>
         /// Calculate total number of Cells. All values are kept as integers
         /// </summary>
-        private void GetTotalCells()
+        private void GetTotalCapacity()
         {
-            TotalCells = 1;
-            for (int i = 0; i < NumberOfDimensions; i++)
-            {
-                TotalCells *= SideLength;
-            }
+          this.TotalCapacity = 1;
+          foreach(int dimension in this.PuzzleDimensions)
+          {
+                this.TotalCapacity *= dimension;
+          }
         }
     }
 }

@@ -7,7 +7,6 @@ namespace CellBlockV2Library
     /// </summary>
     public interface IPuzzleData
     {
-        int NumberOfDimensions { get; set; }
         /// <summary>
         /// The inner list will hold data about a single predefined Cell with the value (Block area) at index 0 in the list. The cartesian coordinates follow starting at index 1.
         /// The outer list holds all the predefined Cells.
