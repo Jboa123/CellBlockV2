@@ -1,24 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using CellBlockV2Library.Puzzle_Objects;
+using System.Collections.Generic;
 
 namespace CellBlockV2Library
 {
     /// <summary>
-    /// Holds the information for a specific puzzle. Data will be passed down from the GUI
+    /// Holds the information that defines a puzzle. Data will be passed down from the GUI.
     /// </summary>
     public interface IPuzzleData
     {
         /// <summary>
-        /// The inner list will hold data about a single predefined Cell with the value (Block area) at index 0 in the list. The cartesian coordinates follow starting at index 1.
-        /// The outer list holds all the predefined Cells.
+        /// All the PredfinedCells(PDC) that define this puzzle. Each PDC holds a value(capacity) and Coordinates.
         /// </summary>
-        List<List<int>> PreDefinedCells { get; set; }
+        List<IPredefinedCell> PreDefinedCells { get; set; }
         /// <summary>
-        /// The length of each dimension in Cells for this puzzle.
+        /// The length of each dimension for this puzzle.
         /// </summary>
-        List<int> PuzzleDimensions { get; set; }
+        List<int> SideLengths { get; set; }
         /// <summary>
-        /// A integer represesnting the total number of Cells that make up the Puzzle. The product of all PuzzleDimensions.
+        /// A integer represesnting the total number of Cells that make up the Puzzle.
         /// </summary>
-        int TotalCapacity { get; set; }
+        int TotalCapacity { get;}
     }
 }

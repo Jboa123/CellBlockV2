@@ -1,34 +1,31 @@
-﻿using System;
+﻿using CellBlockV2Library.Puzzle_Objects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CellBlockV2Library
 {
-
-
     public class PuzzleData : IPuzzleData
     {
         public PuzzleData()
         {
-            GetTotalCapacity();
+
         }
-
-        public List<int> PuzzleDimensions { get; set; }
-
-        public List<List<int>> PreDefinedCells { get; set; }
-        public int TotalCapacity{ get; set; }
-
-
-        /// <summary>
-        /// Calculate total number of Cells. All values are kept as integers
-        /// </summary>
-        private void GetTotalCapacity()
+        public List<int> SideLengths { get; set; }
+        public List<IPredefinedCell> PreDefinedCells { get; set; }
+        public int TotalCapacity
         {
-          this.TotalCapacity = 1;
-          foreach(int dimension in this.PuzzleDimensions)
-          {
-                this.TotalCapacity *= dimension;
-          }
+            //Multiply each side length to calculate total capacity.
+            get
+            {
+                int capacity = 1;
+                foreach (int length in SideLengths)
+                {
+                    capacity *= length;
+                }
+                return capacity;
+            }
         }
+
     }
 }
