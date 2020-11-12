@@ -7,24 +7,9 @@ namespace CellBlockV2Library.Puzzle_Objects
     class Grid : IGrid
     {
         private IGridConversions _gridConversions;
+        
         public List<ICell> Cells { get; set; }
         public List<IMainBlock> MainBlocks { get; set; }
-        public int SolvedCellCount { get; set; }
-        public bool HasSolution
-        {
-            get
-            {
-                throw new NotImplementedException();
-               /* if (SolvedCellCount == totalCapacity)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }*/
-            }
-        }
 
         public ICell GetCellFromCartesian(List<int> cartesianCoordinates)
         {

@@ -15,14 +15,6 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// </summary>
         List<IMainBlock> MainBlocks { get; set; }
         /// <summary>
-        /// The number of Cells within this Grid that are marked as owned.
-        /// </summary>
-        int SolvedCellCount { get; set; }
-        /// <summary>
-        /// If the Grid's capacity is equal to SolvedCellCount, the Grid has a solution. True is returned if the Grid has a solution, otherwise false.
-        /// </summary>
-        bool HasSolution { get;}
-        /// <summary>
         /// Returns the Cell that lies at the input coordinates.
         /// </summary>
         /// <param name="cartesianCoordinates"></param>
