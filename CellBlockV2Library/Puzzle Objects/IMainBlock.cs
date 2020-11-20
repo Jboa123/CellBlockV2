@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CellBlockV2Library.Puzzle_Objects
 {
-    public interface IMainBlock : IBlock
+    public interface IMainBlock
     {
-        HashSet<IPossibleBlock> PossibleBlocks { get; set; }
+        int Capacity { get; set; }
+        int Index { get; set; }
+        Stack<IMainBlockInstance> Instances { get; set; }
+        ICell PreDefinedCell { get; set; }
     }
 }
