@@ -2,6 +2,9 @@
 
 namespace CellBlockV2Library.Puzzle_Objects
 {
+    /// <summary>
+    /// Stores data that may need to be copied and modified, retaining the original data.
+    /// </summary>
     public interface ICellInstance
     {
         /// <summary>

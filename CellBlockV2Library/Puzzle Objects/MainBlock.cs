@@ -4,8 +4,15 @@ using System.Text;
 
 namespace CellBlockV2Library.Puzzle_Objects
 {
+    /// <summary>
+    /// A fundamental object in the puzzle.
+    /// The Cells that make up te MainBlock define the solution to the puzzle.
+    /// </summary>
     public class MainBlock : IMainBlock
     {
+        /// <summary>
+        /// The number of Cells contained within this MainBlock
+        /// </summary>
         public int Capacity { get; set; }
         /// <summary>
         /// The Cell that was initally provided.
