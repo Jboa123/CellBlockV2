@@ -6,7 +6,7 @@ namespace CellBlockV2Library
     /// <summary>
     /// Stores the data used when finding the solution to the puzzle
     /// </summary>
-    public interface IProcessingData
+    public interface ISolutionTracker
     {
         /// <summary>
         /// The key represents the capacity of a block.
@@ -23,9 +23,17 @@ namespace CellBlockV2Library
         /// </summary>
         int MaxStackHeight { get; set; }
         /// <summary>
-        /// An integer representing the number of solved MainBlocks based on the top of the MainBlock instances stack.
+        /// The number of solved MainBlocks based on the top of the MainBlock instances stack.
         /// Used to check if a solution has been found.
         /// </summary>
         int SolvedMainBlockCount { get; set; }
+        /// <summary>
+        /// Stores the solutions to the puzzle, once found.
+        /// The inner list holds a single solution.
+        /// Each int represents the index of a possible block that in turn reprents the solution to a MainBlock.
+        /// The order of the list is aligned with the Grid.MainBlocks list.
+        /// The outer list stores all solutions.
+        /// </summary>
+        List<List<int>> Solutions { get; set; }
     }
 }

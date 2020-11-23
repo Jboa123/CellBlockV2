@@ -7,7 +7,7 @@ namespace CellBlockV2Library.Initialisation
 {
     public class CreatePuzzleObjects
     {
-        private IProcessingData _processingData { get; set; }
+        private ISolutionTracker _processingData { get; set; }
         private IPuzzleData _puzzleData { get; set; }
 
         public void CreateAllPuzzleObjects()
