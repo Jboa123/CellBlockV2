@@ -11,6 +11,19 @@ namespace CellBlockV2Library.Puzzle_Objects
     public class MainBlock : IMainBlock
     {
         /// <summary>
+        /// Also creates the first MainBlockInstance and adds it to the stack.
+        /// </summary>
+        /// <param name="capacity"></param>
+        /// <param name="preDefinedCell"></param>
+        /// <param name="index"></param>
+        public MainBlock(int capacity, ICell preDefinedCell, int index)
+        {
+            PreDefinedCell = preDefinedCell;
+            Capacity = capacity;
+            Index = index;
+            Instances.Push(new MainBlockInstance());
+        }
+        /// <summary>
         /// The number of Cells contained within this MainBlock
         /// </summary>
         public int Capacity { get; set; }
@@ -25,6 +38,6 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// <summary>
         /// As trial and error may be required. Each instance stores data that can be copied and modified whilst retaining the original data.
         /// </summary>
-        public Stack<IMainBlockInstance> Instances { get; set; }
+        public Stack<IMainBlockInstance> Instances { get; set; } = new Stack<IMainBlockInstance>();
     }
 }
