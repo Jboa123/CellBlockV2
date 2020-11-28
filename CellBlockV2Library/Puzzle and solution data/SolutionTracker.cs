@@ -17,7 +17,7 @@ namespace CellBlockV2Library
         /// The value holds all possible combinations of side lengths a block of the given capacity could be.
         /// The inner list holds 1 set of possible side lengths.
         /// </summary>
-        public Dictionary<int, List<List<int>>> BlockDimensionSets { get; set; }
+        public Dictionary<int, List<List<int>>> BlockDimensionSets { get; set; } = new Dictionary<int, List<List<int>>>()
         /// <summary>
         /// The Grid holds references to all Cells and MainBlocks.
         /// </summary>
