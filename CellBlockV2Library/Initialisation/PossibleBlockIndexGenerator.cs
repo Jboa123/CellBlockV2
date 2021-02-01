@@ -1,4 +1,6 @@
-﻿using CellBlockV2Library.Puzzle_Objects;
+﻿using CellBlockV2Library.Possible_Block_Editing;
+using CellBlockV2Library.Puzzle_Objects;
+using CellBlockV2Library.Static_Methods;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,22 +9,19 @@ using System.Text;
 
 namespace CellBlockV2Library.Initialisation
 {
-    public class GeneratePossibleBlocks
+    /// <summary>
+    /// Calculates all the PossibleBlocks for the puzzle, adding the indices to the Cells and the MainBlocks.
+    /// </summary>
+    public class PossibleBlockIndexGenerator
     {
         private ISolutionTracker _solutionTracker;
         private IPuzzleData _puzzleData;
-        /// <summary>
-        /// Multiple matrix of the current block dimensions set.
-        /// </summary>
-        private List<int> MultipleMatrix { get; set; }
-        /// <summary>
-        /// The set of block dimensions currently being processed.
-        /// </summary>
-        private List<int> DimensionSet { get; set; }
+        private IOwnershipSetter _ownershipSetter;
+
         /// <summary>
         /// The MainBlock currently being processed.
         /// </summary>
-        private IMainBlock MainBlock{ get; set; }
+        private IPossibleBlock PossibleBlock { get; set; }
         /// <summary>
         /// A layer of Cells being used to calculate the possible owners of adjacent Cells. 
         /// Each Cell in the stack is the central cell of the line (purpendicular to the layer) being processed.
@@ -37,11 +36,7 @@ namespace CellBlockV2Library.Initialisation
         /// Defined by the multiple matrix and the dimension index.
         /// </summary>
         private int NodeSepartion { get; set; }
-        /// <summary>
-        /// The index of the current dimension set in block dimension sets list in solution tracker.
-        /// Directly used in the calculation of a possible block index.
-        /// </summary>
-        private int DimensionSetIndex { get; set; }
+
         /// <summary>
         /// The index of the dimenion that is currently being processed.
         /// </summary>
@@ -51,27 +46,25 @@ namespace CellBlockV2Library.Initialisation
         /// Loops though all MainBlocks within the Grid.
         /// Eventually adding all possible block indices to each Cell and MainBlock.
         /// </summary>
-        private void ProcessAllMainBlocks()
+        public void InitialisePossibleBlocks()
         {
             foreach (IMainBlock mainBlock in _solutionTracker.Grid.MainBlocks)
             {
-                MainBlock = mainBlock;
-                ProcessMainBlocks();
+                ProcessMainBlock(mainBlock);
             }
+
         }
         /// <summary>
         /// Considers a single MainBlock at a time.
         /// </summary>
-        private void ProcessMainBlocks()
+        private void ProcessMainBlock(IMainBlock mainBlock)
         {
-            List<List<int>> BlockDimensionSets = _solutionTracker.BlockDimensionSets[MainBlock.Capacity];
-            DimensionSetIndex = 0;
-            while (DimensionSetIndex < BlockDimensionSets.Count)
+            int dimensionSetIndex = 0;
+            while (dimensionSetIndex < _solutionTracker.BlockDimensionSets[mainBlock.Capacity].Count)
             {
-                //MultipleMatrix =
-                DimensionSet = BlockDimensionSets[DimensionIndex];
+                PossibleBlock = AdditionalMethods.CreatPossibleBlockFromDimensionSetIndex(mainBlock, _solutionTracker.BlockDimensionSets, dimensionSetIndex);
                 ProcessDimensionSet();
-                DimensionSetIndex++;
+                dimensionSetIndex++;
             }
         }
         /// <summary>
@@ -80,14 +73,14 @@ namespace CellBlockV2Library.Initialisation
         private void ProcessDimensionSet()
         {
             //For the dimension set, 1 dimension is considered at a time starting with that of the highest index.
-            int dimensionIndex = DimensionSet.Count - 1;
+            int dimensionIndex = PossibleBlock.DimensionSet.Count - 1;
             //The algorith uses the Pre-defined Cell as the starting point.
-            CurrentDimensionOfCells.Push(MainBlock.PreDefinedCell);
+            CurrentDimensionOfCells.Push(PossibleBlock.MainBlock.PreDefinedCell);
 
             while (DimensionIndex >= 0)
             {
                 NextDimensionOfCells = new Stack<ICell>();
-                NodeSepartion = MultipleMatrix[dimensionIndex + 1];
+                NodeSepartion = PossibleBlock.MultipleMatrix[dimensionIndex + 1];
                 ProcessDimension();
                 CurrentDimensionOfCells = NextDimensionOfCells;
                 dimensionIndex--;
@@ -99,7 +92,7 @@ namespace CellBlockV2Library.Initialisation
         private void ProcessDimension()
         {
             //A of length, l, has a reach of l-1 to eith side of the Pre-defined Cell whilst still containg the pre-defined Cell.
-            int reach = DimensionSet[DimensionIndex] - 1;
+            int reach = PossibleBlock.DimensionSet[DimensionIndex] - 1;
             //The position of the layer of Cells in the dimension currently being processed.
             int position = CurrentDimensionOfCells.Peek().Coordinates[DimensionIndex];
             //The position of the outer most Cells in the Grid  in the current dimension.
@@ -117,35 +110,36 @@ namespace CellBlockV2Library.Initialisation
                     //Retrieves the Cell to be processed.
                     ICell outerCell = _solutionTracker.Grid.GetCellFromOffset(centralCell, DimensionIndex, offset);
                     NextDimensionOfCells.Push(outerCell);
-                    if (outerCell.Instances.Peek().PossibleOwners.ContainsKey(MainBlock) == false)
+                    if (outerCell.GetPossibleOwners.ContainsKey(PossibleBlock.MainBlock) == false)
                     {
-                        outerCell.Instances.Peek().PossibleMainBlocks.AddLast(MainBlock);
-                        outerCell.Instances.Peek().PossibleOwners.Add(MainBlock, GetCellPossilbeOwners(centralCell, offset));
+                        outerCell.GetPossibleMainBlocks.AddLast(PossibleBlock.MainBlock);
+                        outerCell.GetPossibleOwners.Add(PossibleBlock.MainBlock, GetCellPossilbeOwners(centralCell, offset));
                     }
                     else
                     {
                         foreach (int possibleOwner in GetCellPossilbeOwners(centralCell, offset))
                         {
-                            outerCell.Instances.Peek().PossibleOwners[MainBlock].AddLast(possibleOwner);
+                            outerCell.GetPossibleOwners[PossibleBlock.MainBlock].AddLast(possibleOwner);
                         }
                     }
                 }
             }
-
+            // Some PossibleBlocks are not possible as they extend beyond the bounds of the Grid.
+            // These PossibleBlocks are removed.
             if (upperLimit != reach)
             {
-                foreach (int possibleBlock in GetCellPossilbeOwners(MainBlock.PreDefinedCell, upperLimit + 1))
+                foreach (int possibleBlockIndex in GetCellPossilbeOwners(PossibleBlock.MainBlock.PreDefinedCell, upperLimit + 1))
                 {
-                    MainBlock.Instances.Peek().PossibleBlocks.Remove(possibleBlock);
+                    PossibleBlock.MainBlock.PossibleBlocks.Remove(possibleBlockIndex);
                 }
                 
             }
 
             if (lowerLimit != -reach)
             {
-                foreach (int possibleBlock in GetCellPossilbeOwners(MainBlock.PreDefinedCell, lowerLimit - 1))
+                foreach (int possibleBlockIndex in GetCellPossilbeOwners(PossibleBlock.MainBlock.PreDefinedCell, lowerLimit - 1))
                 {
-                    MainBlock.Instances.Peek().PossibleBlocks.Remove(possibleBlock);
+                    PossibleBlock.MainBlock.PossibleBlocks.Remove(possibleBlockIndex);
                 }
                 
             }
@@ -157,18 +151,16 @@ namespace CellBlockV2Library.Initialisation
         /// <param name="offset"></param>
         private LinkedList<int> GetCellPossilbeOwners(ICell centralCell, int offset)
         {
-
             //The number of possible block indices to be added before or after each node for this Cell.
-            int PBIndexToRemoveCount = Math.Abs(offset) * MultipleMatrix[DimensionIndex];
+            int PBIndexToRemoveCount = Math.Abs(offset) * PossibleBlock.MultipleMatrix[DimensionIndex];
             //A Cell's possible owners is in the from dictionary<MainBlock, LinkedList<int>>.
             LinkedList<int> possibleOwners = new LinkedList<int>();
             //Loops though appropriate integers adding to the both the MainBlock's possible blocks and the Cell's possible owners
-
-
-            LinkedListNode<int> centralCellPossibleOwner = centralCell.Instances.Peek().PossibleOwners[MainBlock].Last;
+            LinkedListNode<int> centralCellPossibleOwner = centralCell.Instances.Peek().PossibleOwners[PossibleBlock.MainBlock].Last;
             LinkedList<int> outerCellPossibleOwners = new LinkedList<int>();
+            //counts the number of PossibleBlocks that have been looped through.
             int counter = 0;
-            while (centralCellPossibleOwner.Value/(MainBlock.Capacity*DimensionIndex) >=1)
+            while (centralCellPossibleOwner.Value/(PossibleBlock.MainBlock.Capacity*DimensionIndex) >=1)
             {
                 if (offset < 0)
                 {
@@ -184,11 +176,9 @@ namespace CellBlockV2Library.Initialisation
                         outerCellPossibleOwners.AddFirst(centralCellPossibleOwner.Value);
                     }
                 }
-
                 centralCellPossibleOwner = centralCellPossibleOwner.Previous;
                 counter++;
             }
-
             return outerCellPossibleOwners;
         }
 

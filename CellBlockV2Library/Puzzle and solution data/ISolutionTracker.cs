@@ -18,15 +18,7 @@ namespace CellBlockV2Library
         /// The Grid holds references to all Cells and MainBlocks.
         /// </summary>
         IGrid Grid { get; set; }
-        /// <summary>
-        /// An integer representing the maximum number of Cell or MainBlock instaces that currently exist.
-        /// </summary>
-        int MaxStackHeight { get; set; }
-        /// <summary>
-        /// The number of solved MainBlocks based on the top of the MainBlock instances stack.
-        /// Used to check if a solution has been found.
-        /// </summary>
-        int SolvedMainBlockCount { get; set; }
+
         /// <summary>
         /// Stores the solutions to the puzzle, once found.
         /// The inner list holds a single solution.

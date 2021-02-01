@@ -17,6 +17,15 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// </summary>
         int Index { get; set; }
         /// <summary>
+        /// The index of the PossibleBlock that represents the solution to this MainBlock.
+        /// Set as -1 if unknown.
+        /// </summary>
+        int Solution { get; set; }
+        /// <summary>
+        /// Returns the PossibleBlocks hashset from the top of the Instances stack.
+        /// </summary>
+        HashSet<int> PossibleBlocks { get; set; }
+        /// <summary>
         /// The position of his MainBlock in the Grid.MainBlocks list.
         /// </summary>
         Stack<IMainBlockInstance> Instances { get; set; }

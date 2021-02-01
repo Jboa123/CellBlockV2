@@ -8,30 +8,29 @@ namespace CellBlockV2Library
     /// <summary>
     /// Creates the Grid, Cells and MainBlocks.
     /// </summary>
-    public class CreatePuzzleObjects : ICreatePuzzleObjects
+    public class PuzzleObjectCreator : IPuzzleObjectCreator
     {
-        public CreatePuzzleObjects()
+        public PuzzleObjectCreator()
         {
-            CreateCells();
-            CreateMainBlocks();
+
         }
-        public IPuzzleData _puzzleData { get; set; }
-        public ISolutionTracker _solutionTracker { get; set; }
+        private IPuzzleData _puzzleData;
+        private ISolutionTracker _solutionTracker;
         /// <summary>
-        /// Create all cells within the Grid, based on the Grid's side lengths, specified by the user.
+        /// Create all cells within the Grid, based on the Grid's side lengths.
         /// </summary>
-        private void CreateCells()
+        public void CreateCells()
         {
             for (int i = 0; i < GetCapacity(); i++)
             {
-                ICell cell = new Cell(GetCoordinatesFromLinearPosition(i));
+                ICell cell = new cell(GetCoordinatesFromLinearPosition(i));
                 _solutionTracker.Grid.Cells.Add(cell);
             }
         }
         /// <summary>
-        /// Creates all the MainBlocks for the puzzle based on all the PreDefinedCells given by the user.
+        /// Creates all the MainBlocks for the puzzle based on all the PreDefinedCells.
         /// </summary>
-        private void CreateMainBlocks()
+        public void CreateMainBlocks()
         {
             for (int i = 0; i < _puzzleData.PreDefinedCells.Count; i++)
             {
@@ -40,8 +39,10 @@ namespace CellBlockV2Library
             }
         }
 
+        
+
         /// <summary>
-        /// The total number of cells contained within the Grid.
+        /// Returns the total number of cells contained within the Grid.
         /// </summary>
         private int GetCapacity()
         {

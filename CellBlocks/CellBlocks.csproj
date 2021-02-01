@@ -3,15 +3,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Program.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
   </ItemGroup>
 
 </Project>

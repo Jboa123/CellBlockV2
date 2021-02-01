@@ -8,8 +8,4 @@
     <PackageReference Include="Autofac" Version="5.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Iterations\" />
-  </ItemGroup>
-
 </Project>

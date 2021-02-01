@@ -1,6 +1,7 @@
 ﻿using CellBlockV2Library.Puzzle_Objects;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -21,16 +22,8 @@ namespace CellBlockV2Library
         /// <summary>
         /// The Grid holds references to all Cells and MainBlocks.
         /// </summary>
-        public IGrid Grid { get; set; }
-        /// <summary>
-        /// An integer representing the maximum number of Cell or MainBlock instaces that currently exist.
-        /// </summary>
-        public int SolvedMainBlockCount { get; set; }
-        /// <summary>
-        /// The number of solved MainBlocks based on the top of the MainBlock instances stack.
-        /// Used to check if a solution has been found.
-        /// </summary>
-        public int MaxStackHeight { get; set; }
+        public IGrid Grid { get; set; } = new Grid();
+
         /// <summary>
         /// Stores the solutions to the puzzle, once found.
         /// The inner list holds a single solution.
@@ -39,6 +32,7 @@ namespace CellBlockV2Library
         /// The outer list stores all solutions.
         /// </summary>
         public List<List<int>> Solutions { get; set; } = new List<List<int>>();
+
 
     }
 }

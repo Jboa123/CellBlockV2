@@ -24,6 +24,24 @@ namespace CellBlockV2Library.Puzzle_Objects
             Instances.Push(new MainBlockInstance());
         }
         /// <summary>
+        /// Returns the PossibleBlocks hashset from the top of the Instances stack.
+        /// </summary>
+        public HashSet<int> PossibleBlocks { get => Instances.Peek().PossibleBlocks; set => Instances.Peek().PossibleBlocks = value; }
+        /// <summary>
+        /// The index of the PossibleBlock that represents the solution to this MainBlock.
+        /// Set as -1 if unknown.
+        /// </summary>
+        public int Solution
+        {
+            get => Instances.Peek().SolutionIndex;
+            //PossibleBlocks no longer required when a solution is found.
+            set
+            {
+                Instances.Peek().SolutionIndex = value;
+                Instances.Peek().PossibleBlocks = null;
+            }
+        }
+        /// <summary>
         /// The number of Cells contained within this MainBlock
         /// </summary>
         public int Capacity { get; set; }

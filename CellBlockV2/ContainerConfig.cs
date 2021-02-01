@@ -11,7 +11,7 @@ namespace CellBlockV2
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType
+           // builder.RegisterType
 
         }
     }

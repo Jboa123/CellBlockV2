@@ -1,6 +1,7 @@
 ﻿using CellBlockV2Library.Puzzle_Objects;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 /// <summary>
@@ -9,13 +10,36 @@ using System.Text;
 /// </summary>
 namespace CellBlockV2Library.Puzzle_Objects
 {
-    class Cell : ICell
+    class cell : ICell
     {
-        public Cell(List<int> coordinates)
+        public cell(List<int> coordinates)
         {
             Coordinates = coordinates;
             Instances.Push(new CellInstance());
         }
+        /// <summary>
+        /// Returns the PossibleOwners from the top of the instances stack.
+        /// </summary>
+        public Dictionary<IMainBlock, LinkedList<int>> GetPossibleOwners { get => Instances.Peek().PossibleOwners;}
+        /// <summary>
+        /// Returns the PossibleMainBlocks from the top of the instances stack.
+        /// </summary>
+        public LinkedList<IMainBlock> GetPossibleMainBlocks { get => Instances.Peek().PossibleMainBlocks;}
+        /// <summary>
+        /// Returns the owning MainBlock from the top of the instances stack.
+        /// Returns null if the owner is unknown.
+        /// </summary>
+        public IMainBlock Owner 
+            { 
+                get => Instances.Peek().OwnedBy;
+                //If the Owner is known the possibleOwners properties are no longer required.
+                set
+                { 
+                Instances.Peek().OwnedBy = value;
+                Instances.Peek().PossibleMainBlocks = null;
+                Instances.Peek().PossibleOwners = null;
+                }
+            }
         /// <summary>
         /// The Cartesian coordinates of the cell;
         /// </summary>

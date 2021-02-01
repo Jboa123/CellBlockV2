@@ -25,6 +25,29 @@ namespace CellBlockV2Library.Puzzle_Objects
         /// All the MainBlock within the Grid.
         /// </summary>
         public List<IMainBlock> MainBlocks { get; set; } = new List<IMainBlock>();
+        /// <summary>
+        /// An integer representing the maximum number of Cell or MainBlock instaces that currently exist.
+        /// </summary>
+        public int SolvedMainBlockCount { get; set; } = 0;
+        /// <summary>
+        /// The number of solved MainBlocks based on the top of the MainBlock instances stack.
+        /// Used to check if a solution has been found.
+        /// </summary>
+        public int MaxStackHeight { get; set; } = 1;
+        public bool HasSolution
+        {
+            get
+            {
+                if (SolvedMainBlockCount == MainBlocks.Count)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         /// <summary>
         /// Returns the cell with the given Cooordinates
